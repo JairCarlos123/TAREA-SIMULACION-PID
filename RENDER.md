@@ -37,8 +37,8 @@ aunque Render no utiliza el BAT.
 | Campo | Valor |
 |---|---|
 | Root Directory | Vacío si app.py está en la raíz del repositorio |
-| Build Command | `pip install -r requirements.txt` |
-| Start Command | `gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 2 --timeout 120` |
+| Build Command | `python -m pip install -r requirements.txt && python -m gunicorn --version` |
+| Start Command | `python -m gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 2 --timeout 120` |
 | Health Check Path | `/api/health` |
 
 Si mantuviste todos los archivos dentro de una subcarpeta del repositorio,
@@ -46,6 +46,16 @@ Root Directory debe indicar esa subcarpeta, por ejemplo `CELDA_LAB`.
 
 4. Selecciona el plan que usarás y crea el servicio.
 5. Cuando el despliegue esté activo, abre la URL que devuelve Render.
+
+Si el servicio ya existía y configuraste estos campos manualmente, actualízalos
+también en Settings de Render. Subir `render.yaml` no cambia automáticamente los
+comandos de un servicio creado sin Blueprint.
+
+Si aparece `gunicorn: command not found` después de una instalación correcta,
+usa los comandos anteriores: ejecutan pip y Gunicorn mediante el intérprete
+Python, sin depender de que el ejecutable `gunicorn` esté en PATH. La comprobación
+`python -m gunicorn --version` hace que un problema de instalación se detecte en
+la construcción. Después ejecuta **Manual Deploy > Clear build cache & deploy**.
 
 También se incluye `render.yaml` para crear el servicio mediante **New >
 Blueprint**, con el mismo comando de construcción e inicio. El archivo propone
