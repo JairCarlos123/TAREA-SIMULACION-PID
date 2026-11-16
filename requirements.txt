@@ -1,0 +1,2 @@
+# Dependencia del servidor público de Render; el BAT local no la necesita.
+gunicorn==27.0.1; sys_platform != "win32"
